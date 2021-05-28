@@ -4,7 +4,11 @@
   "description": "Mern Stack Project create Restaurant Web Application",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "start-server": "nodemon server.js",
+    "start-client": "npm start --prefix client",
+    "dev": "concurrently \"npm run start-server\" \"npm run start-client\""
+
   },
   "keywords": [
     "Node",
@@ -13,5 +17,16 @@
     "MongoDB"
   ],
   "author": "Asmar Munir",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.11",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.0",
+    "morgan": "^1.10.0"
+  }
 }
