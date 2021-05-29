@@ -2,14 +2,13 @@
 import axios from 'axios';
 
 
-export const signup = async(data) =>{
+export const signup = userData => {
     const config = {
-        headers:{
-            'Content-Type': 'appliaction/json'
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
     }
 
-    const response = await axios.post('/api/auth/signup' , data , config)
-
-    return response
+    return axios.post('/api/auth/signup', userData, config);
 }

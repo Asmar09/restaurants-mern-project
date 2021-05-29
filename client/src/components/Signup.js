@@ -1,5 +1,4 @@
 import React,{useState} from "react";
-import './Signup.css';
 import {Link} from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
@@ -59,18 +58,17 @@ const Signup = () => {
 
       signup(data).then( (response) =>{
     console.log(response);
-
     setFormData({
       username: "",
       email: "",
       password: "",
       password2:"",
       loading: false,
-      successMsg: response.data.SuccessMessage
+      errorMsg: false,
+      successMsg: response.data.successMessage
     })
       }).catch(err =>{
-        console.log("Error Found", err);
-        setFormData({...formData , loading: false})
+        setFormData({...formData , loading: false , errorMsg: err.response.data.errorMessage})
       })
    }
 

@@ -6,7 +6,8 @@ import Header from './Header';
 import Home from './Home';
 import Signup from './Signup';
 import Signin from './Signin';
-import NotFound from './NotFound'
+import NotFound from './NotFound';
+import './App.css'
 
 const App = () => (
     <BrowserRouter>
