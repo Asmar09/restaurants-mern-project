@@ -1,7 +1,15 @@
 .signup-container{
-    background-image: url('https://images.pexels.com/photos/583846/pexels-photo-583846.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500');
+    background-image: url('https://images.pexels.com/photos/1243337/pexels-photo-1243337.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    opacity: 0.7;
+    opacity: 0.8;
+}
+
+.signin-container{
+    background-image: url('https://images.pexels.com/photos/6341164/pexels-photo-6341164.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.8;
 }

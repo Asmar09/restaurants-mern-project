@@ -7,6 +7,12 @@ check('email').isEmail().normalizeEmail().withMessage('Invalid Email'),
 check('password').isLength({ min: 6 }).withMessage('password must be at least 6 chars long')
 ]
 
+exports.signinValidator = [ check('email').isEmail().normalizeEmail().withMessage('Invalid Email'),
+check('password').isLength({ min: 6 }).withMessage('password must be at least 6 chars long')
+]
+
+
+
 
 exports.validatorResult = (req,res,next) =>{
 

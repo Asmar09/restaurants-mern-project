@@ -57,7 +57,6 @@ const Signup = () => {
       })
 
       signup(data).then( (response) =>{
-    console.log(response);
     setFormData({
       username: "",
       email: "",
@@ -76,7 +75,7 @@ const Signup = () => {
 
   return (
     <div className="signup-container">
-        <div className="row px-3 vh-100">
+        <div className="row px-3c mw-100 vh-100">
        <div className="col-md-5 mx-auto align-self-center">
        <div>
        {
@@ -168,7 +167,6 @@ const Signup = () => {
           Have an account ? <Link to="/signin">Login</Link>
         </p>
       </form>
-       {/* <p>{JSON.stringify(formData)}</p> */}
       </div>
         </div>
     </div>
