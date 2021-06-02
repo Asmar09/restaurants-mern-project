@@ -1,17 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {ErrorMessage} from '../helpers/message';
 import {Loading} from '../helpers/loading';
-import {Link} from 'react-router-dom';
+import {Link , useHistory} from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import {signin} from '../api/auth';
-
+import {setAuthentication } from '../helpers/auth';
+import {getLocalStorage} from '../helpers/localStorage';
 
 const Signin = () => {
+  let history = useHistory()
+
+
+  useEffect(() => {
+    let storage =  getLocalStorage()
+    if(storage && storage.role === 1){
+      history.push('/admin/dashboard')
+    }else if(storage && storage.role === 0){
+       history.push('/user/dashboard')
+    }
+  }, [history])
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    redirectToDashboard: false,
     errorMsg: false,
     loading: false,
   });
@@ -24,7 +35,7 @@ const Signin = () => {
     })
       }
  
-      const handleSubmit = (evt) =>{
+      const handleSubmit = async (evt) =>{
         evt.preventDefault()
         if( isEmpty(email) || isEmpty(password)){
             setFormData({
@@ -45,8 +56,15 @@ const Signin = () => {
               ...formData,
               loading: true
            })
-           signin(data)
-        //    signin(data).then( (response) =>{
+           signin(data).then( (response) =>{
+            
+            setAuthentication(response.data.token , response.data.user);
+            let storage =  getLocalStorage()
+             if(storage && storage.role === 1){
+               history.push('/admin/dashboard')
+             }else{
+                history.push('/user/dashboard')
+             }
         //  setFormData({
         //    username: "",
         //    email: "",
@@ -56,14 +74,14 @@ const Signin = () => {
         //    errorMsg: false,
         //    successMsg: response.data.successMessage
         //  })
-        //    }).catch(err =>{
-        //      setFormData({...formData , loading: false , errorMsg: err.response.data.errorMessage})
-        //    })
+           }).catch(err =>{
+             setFormData({...formData , loading: false , errorMsg: err.response.data.errorMessage})
+           })
         }
    
        }
        
-  const { email, password, redirectToDashboard, errorMsg, loading } = formData;
+  const { email, password,  errorMsg, loading } = formData;
 
   return (
     <div className="signin-container">
@@ -83,7 +101,7 @@ const Signin = () => {
     }
     </div>
    
-  <form className="signup-form" onSubmit={handleSubmit} noValidate>
+  <form className="signup-form" onSubmit={(e) => handleSubmit(e)} noValidate>
     <div className="form-group input-group flex-nowrap mb-3">
       <span className="input-group-text" id="addon-wrapping">
         <i className="fas fa-envelope"></i>

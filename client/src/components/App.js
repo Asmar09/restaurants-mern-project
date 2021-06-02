@@ -7,6 +7,10 @@ import Home from './Home';
 import Signup from './Signup';
 import Signin from './Signin';
 import NotFound from './NotFound';
+import AdminDashboard from './AdminDashboard';
+import UserDashboard from './UserDashboard';
+import AdminRoute from './AdminRoute';
+import UserRoute from './UserRoute';
 import './App.css'
 
 const App = () => (
@@ -17,6 +21,8 @@ const App = () => (
              <Route exact path="/" component={Home} />
              <Route exact path="/signup" component={Signup} />
              <Route exact path="/signin" component={Signin} />
+             <UserRoute exact path="/user/dashboard" component={UserDashboard} />
+             <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
              <Route component={NotFound} />
 
          </Switch>

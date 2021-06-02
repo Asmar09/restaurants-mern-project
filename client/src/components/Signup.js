@@ -1,13 +1,25 @@
-import React,{useState} from "react";
-import {Link} from 'react-router-dom';
+import React,{useState , useEffect} from "react";
+import {Link , useHistory} from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 import isEmpty from 'validator/lib/isEmpty';
 import equals from 'validator/lib/equals';
 import {ErrorMessage, SuccessMessage} from '../helpers/message';
 import {Loading} from '../helpers/loading';
 import {signup} from '../api/auth';
+import {getLocalStorage} from '../helpers/localStorage';
 
 const Signup = () => {
+  let history = useHistory()
+
+  useEffect(() => {
+    let storage =  getLocalStorage()
+    if(storage && storage.role === 1){
+      history.push('/admin/dashboard')
+    }else if(storage && storage.role === 0){
+       history.push('/user/dashboard')
+    }
+  }, [history])
+
       const [formData , setFormData] = useState({
           username: "",
           email: "",
