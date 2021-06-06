@@ -74,7 +74,7 @@ const Header = ({history}) => {
               <>
                 <li className="nav-item">
                   <button className="btn btn-link text-secondary text-decoration-none pl-0" onClick={handleLogout}>
-                  <i class="fas fa-sign-out-alt"></i> Logout
+                  <i className="fas fa-sign-out-alt"></i> Logout
                   </button>
                 </li>
               </>
