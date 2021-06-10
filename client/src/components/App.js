@@ -13,7 +13,10 @@ import AdminRoute from './AdminRoute';
 import UserRoute from './UserRoute';
 import './App.css'
 
-const App = () => (
+
+const App = () => {
+
+    return (
     <BrowserRouter>
      <Header />
      <main>
@@ -28,6 +31,8 @@ const App = () => (
          </Switch>
      </main>
     </BrowserRouter>
-)
+
+    )
+}
 
 export default App

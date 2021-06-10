@@ -1,10 +1,6 @@
 const Product = require("../models/Product");
 
 exports.create = async (req, res) => {
-
-       console.log(req.body);
-       console.log(req.file);
-
        const {filename} = req.file
        const {productName, productPrice, productDesc , productCategory, productQty } = req.body
 
@@ -20,12 +16,28 @@ exports.create = async (req, res) => {
 
          await product.save()
             res.status(200).json({
-                successMessage: `${productName} was created`
+                successMessage: `${productName} was created`,
+                product
             })
   } catch (error) {
-    console.log("Error when creating category", error);
+    console.log("Error when creating product", error);
     res.status(500).json({
       errorMessage: "Please try later",
     });
   }
+};
+
+
+exports.readAll = async (req, res) => {
+
+try {
+  const products = await Product.find({}).populate('productCategory' , 'category')
+
+  res.json({products})
+} catch (error) {
+console.log("Error when fetching product", error);
+res.status(500).json({
+ errorMessage: "Please try later",
+});
+}
 };

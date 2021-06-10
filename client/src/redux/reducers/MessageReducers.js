@@ -1,6 +1,6 @@
 
 
-import {SHOW_ERROR_MESSAGE, SHOW_SUCCESS_MESSAGE , CLEAR_MESSAGES} from '../constants/MessageConstants';
+import {SHOW_ERROR_MESSAGE, SHOW_SUCCESS_MESSAGE , CLEAR_MESSAGES} from '../constants/messageConstants';
 
 
 const INITIAL_STATE = {

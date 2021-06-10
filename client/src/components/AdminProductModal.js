@@ -1,16 +1,21 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState} from 'react';
 import { ErrorMessage, SuccessMessage } from "../helpers/message";
 import { Loading } from "../helpers/loading";
-import {getCategories } from "../api/category";
-import { createProduct } from "../api/product";
 import isEmpty from "validator/lib/isEmpty";
+
+import {useSelector , useDispatch} from 'react-redux';
+import {clearMessages} from '../redux/actions/messageAction';
+import {createProduct} from '../redux/actions/productAction';
+
 
 const AdminProductModal = () => {
 
-    const [categories, setCategories] = useState(null);
-    const [errorMsg, setErrorMsg] = useState(false);
-    const [successMsg, setSuccessMsg] = useState(false);
-    const [loading, setLoading] = useState(false);
+     const {loading} = useSelector(state => state.loading)
+     const {successMsg , errorMsg} = useSelector(state => state.messages)
+     const {categories} = useSelector(state => state.categories)
+     const disptach = useDispatch()
+     const [clientErrorMsg , setClientErrorMsg] = useState('')
+
     const [productData, setProductData] = useState({
       productImage: null,
       productName: "",
@@ -28,28 +33,13 @@ const AdminProductModal = () => {
         productQty,
       } = productData;
     
-      useEffect(() => {
-        loadCategories();
-      }, [loading]);
-    
-      const loadCategories = async () => {
-        await getCategories()
-          .then((response) => {
-            setCategories(response.data.categories);
-            console.log(categories);
-          })
-          .catch((err) => {
-            console.log("error found when fetch data", err);
-          });
-      };
     
       const handleMessages = (e) => {
-        setErrorMsg(false);
-        setSuccessMsg(false);
+             disptach(clearMessages())
+             setClientErrorMsg('')
       };
     
       const handleProductImage = (e) => {
-        console.log(e.target.files[0]);
         setProductData({
           ...productData,
           [e.target.name]: e.target.files[0],
@@ -66,17 +56,17 @@ const AdminProductModal = () => {
       const handleProductSubmit = (e) => {
         e.preventDefault();
         if (productImage === null) {
-          setErrorMsg("Please Select an Image");
+          setClientErrorMsg("Please Select an Image");
         } else if (
           isEmpty(productName) ||
           isEmpty(productPrice) ||
           isEmpty(productDesc)
         ) {
-          setErrorMsg("All fields are required");
+          setClientErrorMsg("All fields are required");
         } else if (isEmpty(productCategory)) {
-          setErrorMsg("Please Select  Category");
+          setClientErrorMsg("Please Select  Category");
         } else if (isEmpty(productQty)) {
-          setErrorMsg("Please Select Quantity");
+          setClientErrorMsg("Please Select Quantity");
         } else {
           let formData = new FormData();
           formData.append("productImage", productImage);
@@ -85,26 +75,16 @@ const AdminProductModal = () => {
           formData.append("productCategory", productCategory);
           formData.append("productPrice", productPrice);
           formData.append("productQty", productQty);
-          setLoading(true)
-          createProduct(formData)
-            .then((response) => {
-          setLoading(false)
-              setProductData({
-                productImage: null,
-                productName: "",
-                productDesc: "",
-                productPrice: "",
-                productCategory: "",
-                productQty: "",
-              });
-    
-              setSuccessMsg(response.data.successMessage);
+         
+           disptach(createProduct(formData))
+            setProductData({
+              productImage: null,
+              productName: "",
+              productDesc: "",
+              productPrice: "",
+              productCategory: "",
+              productQty: "",
             })
-            .catch((err) => {
-          setLoading(false)
-              console.log(err);
-              setErrorMsg(err.response.data.errorMessage);
-            });
         }
       };
     
@@ -119,9 +99,10 @@ const AdminProductModal = () => {
                 <button className="btn-close" data-bs-dismiss="modal"></button>
               </div>
               <div className="modal-body my-2">
-                <div>{errorMsg !== false ? ErrorMessage(errorMsg) : null}</div>
+                <div>{errorMsg !== '' ? ErrorMessage(errorMsg) : null}</div>
+                <div>{clientErrorMsg !== '' ? ErrorMessage(clientErrorMsg) : null}</div>
                 <div>
-                  {successMsg !== false ? SuccessMessage(successMsg) : null}
+                  {successMsg !== '' ? SuccessMessage(successMsg) : null}
                 </div>
                 {loading !== false ? (
                   <div className="text-center"> {Loading()} </div>

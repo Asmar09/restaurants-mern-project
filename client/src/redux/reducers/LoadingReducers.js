@@ -1,6 +1,6 @@
 
 
-import {START_LOADING , STOP_LOADING} from '../constants/LoadingConstants';
+import {START_LOADING , STOP_LOADING} from '../constants/loadingConstants';
 
 const INITIAL_STATE = {
     loading: false

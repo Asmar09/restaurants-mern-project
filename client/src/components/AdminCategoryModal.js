@@ -2,22 +2,27 @@ import React, { useState } from "react";
 import isEmpty from "validator/lib/isEmpty";
 import { ErrorMessage, SuccessMessage } from "../helpers/message";
 import { Loading } from "../helpers/loading";
-import { createCategory } from "../api/category";
+
+
+import {useSelector , useDispatch} from 'react-redux';
+import {clearMessages} from '../redux/actions/messageAction';
+import {createCategories} from '../redux/actions/categoryAction';
 
 const AdminCategoryModal = () => {
+
+  const {successMsg , errorMsg} = useSelector(state => state.messages)
+  const {loading} = useSelector(state => state.loading)
   const [category, setCategory] = useState("");
-  const [errorMsg, setErrorMsg] = useState(false);
-  const [successMsg, setSuccessMsg] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch()
+  const [clientErrorMsg , setClientErrorMsg] = useState('')
 
   const handleMessages = (e) => {
-    setErrorMsg(false);
-    setSuccessMsg(false);
+      dispatch(clearMessages())
   };
 
   const handleCategory = (e) => {
-    setErrorMsg(false);
-    setSuccessMsg(false);
+    dispatch(clearMessages())
+    setClientErrorMsg('')
     setCategory(e.target.value);
   };
 
@@ -25,25 +30,11 @@ const AdminCategoryModal = () => {
     e.preventDefault();
 
     if (isEmpty(category)) {
-      setErrorMsg("Please select Category");
+      setClientErrorMsg("Please select Category");
     } else {
       const data = { category };
-      setLoading(true);
-      createCategory(data)
-        .then((response) => {
-          setLoading(false);
-          setSuccessMsg(response.data.successMessage);
-          setCategory("");
-
-          setTimeout(() => {
-            setSuccessMsg(false);
-            setCategory("");
-          }, 3000);
-        })
-        .catch((err) => {
-          setLoading(false);
-          setErrorMsg(err.response.data.errorMessage);
-        });
+        dispatch(createCategories(data))
+        setCategory('')
     }
   };
 
@@ -57,9 +48,10 @@ const AdminCategoryModal = () => {
               <button className="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div className="modal-body my-2">
-              <div>{errorMsg !== false ? ErrorMessage(errorMsg) : null}</div>
+              <div>{errorMsg !== '' ? ErrorMessage(errorMsg) : null}</div>
+              <div>{clientErrorMsg !== '' ? ErrorMessage(clientErrorMsg) : null}</div>
               <div>
-                {successMsg !== false ? SuccessMessage(successMsg) : null}
+                {successMsg !== '' ? SuccessMessage(successMsg) : null}
               </div>
               {loading !== false ? (
                 <div className="text-center"> {Loading()} </div>

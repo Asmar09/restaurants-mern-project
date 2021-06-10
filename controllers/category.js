@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
       return res.status(400).json({
         errorMessage: `${category} already exists`,
       });
-    }
+    }else{
 
     let newCategory = new Category();
     newCategory.category = category;
@@ -20,6 +20,8 @@ exports.create = async (req, res) => {
       category: newCategory,
       successMessage: `${newCategory.category} was created!`,
     });
+
+  }
   } catch (error) {
     console.log("Error when creating category", error);
     res.status(500).json({

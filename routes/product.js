@@ -10,7 +10,8 @@ const upload = require('../middleware/multer')
 route.post('/' , authenticateJWT , upload.single('productImage') ,
     productController.create
   )
-
+route.get('/' , productController.readAll
+  )
 
 module.exports = route
 
