@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const fs = require('fs');
 
 exports.create = async (req, res) => {
        const {filename} = req.file
@@ -41,3 +42,37 @@ res.status(500).json({
 });
 }
 };
+
+
+exports.read = async (req, res) => {
+	try {
+		const productId = req.params.productId;
+		const product = await Product.findById(productId);
+
+		res.json(product);
+	} catch (err) {
+		console.log(err, 'productController.read error');
+		res.status(500).json({
+			errorMessage: 'Please try again later',
+		});
+	}
+};
+
+exports.delete = async (req, res) => {
+
+  try {
+    const productId = req.params.productId
+    const deleteProduct = await Product.findByIdAndDelete(productId)
+
+    fs.unlink(`uploads/${deleteProduct.fileName}` , (err) =>{
+      if(err) throw err;
+    console.log("When while delete images" , deleteProduct.fileName);
+    res.json(deleteProduct)
+    })
+  } catch (error) {
+  console.log("Error when delete product", error);
+  res.status(500).json({
+   errorMessage: "Please try later",
+  });
+  }
+  };

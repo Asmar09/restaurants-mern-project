@@ -1,6 +1,3 @@
-
-
-
 const express = require('express')
 const route = express.Router()
 const productController = require('../controllers/product')
@@ -12,6 +9,9 @@ route.post('/' , authenticateJWT , upload.single('productImage') ,
   )
 route.get('/' , productController.readAll
   )
+route.delete('/:productId' , authenticateJWT , productController.delete)
+
+route.get('/:productId', productController.read);
 
 module.exports = route
 
