@@ -116,7 +116,6 @@ const AdminProductModal = () => {
                         defaulValue={productImage}
                         onChange={handleProductImage}
                       />
-                      {/* <lable className= "custom-file-label">choose file</lable> */}
                     </div>
                     <div className="form-group">
                       <label className="text-secondary">Name</label>

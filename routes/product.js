@@ -13,5 +13,13 @@ route.delete('/:productId' , authenticateJWT , productController.delete)
 
 route.get('/:productId', productController.read);
 
+route.put(
+	'/:productId',
+	authenticateJWT,
+	upload.single('productImage'),
+	productController.update
+);
+
+
 module.exports = route
 
